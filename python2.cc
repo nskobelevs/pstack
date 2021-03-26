@@ -96,6 +96,8 @@ void PythonPrinter<2>::findInterpHeadFallback() {
         auto image = o.second;
         auto &syms = image->commonSections->debugSymbols;
         for (auto sym : syms) {
+            if (sym.name.substr(0, 10) == "_PyRuntime")
+                throw PyVException() << "Python 3 is not supported yet";
             if (sym.name.substr(0, 11) != "interp_head")
                 continue;
             libpython = o.second;

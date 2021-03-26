@@ -86,7 +86,11 @@ template<int V> bool doPy(Process &proc, std::ostream &o, const PstackOptions &o
             return false;
         printer.printInterpreters(showModules);
     }
-    catch (...) {
+    catch (PyVException) {
+        std::clog << "Python 3 is not supported yet" << std::endl;
+        return true;
+    } catch (...) {
+        std::clog << "python2-dbg is needed for debug information" << std::endl;
         return false;
     }
     return true;
@@ -187,12 +191,8 @@ emain(int argc, char **argv)
 #if defined(WITH_PYTHON)
                    if (python) {
 #ifdef WITH_PYTHON2
-                       if (python && doPy<2>(proc, std::cout, options, pythonModules))
+                       if (doPy<2>(proc, std::cout, options, pythonModules))
                            return;
-#endif
-#ifdef WITH_PYTHON3
-                       doPy<3>(proc, std::cout, options);
-                       return;
 #endif
                    }
 #endif

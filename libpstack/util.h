@@ -40,6 +40,8 @@ public:
     typedef void IsStreamable;
 };
 
+class PyVException : public Exception {};
+
 template <typename E, typename Object, typename Test = typename E::IsStreamable>
 inline const E &operator << (const E &stream, const Object &o) {
     stream.getStream() << o;
