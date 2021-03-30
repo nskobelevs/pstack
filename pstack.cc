@@ -89,9 +89,9 @@ template<int V> bool doPy(Process &proc, std::ostream &o, const PstackOptions &o
     catch (PyVException) {
         std::clog << "Python 3 is not supported yet" << std::endl;
         return true;
-    } catch (...) {
-        std::clog << "python2-dbg is needed for debug information" << std::endl;
-        return false;
+    } catch (Exception e) {
+        std::clog << "python-dbg is needed for debug information" << std::endl;
+        return true;
     }
     return true;
 }
@@ -190,10 +190,15 @@ emain(int argc, char **argv)
                 while (!interrupted) {
 #if defined(WITH_PYTHON)
                    if (python) {
-#ifdef WITH_PYTHON2
-                       if (doPy<2>(proc, std::cout, options, pythonModules))
-                           return;
+// #ifdef WITH_PYTHON2
+//                         if (doPy<2>(proc, std::cout, options, pythonModules))
+//                             return;
+// #endif
+#ifdef WITH_PYTHON3
+                        if (doPy<3>(proc, std::cout, options, pythonModules))
+                            return;
 #endif
+
                    }
 #endif
                    pstack(proc, std::cout, options);
