@@ -7,7 +7,7 @@
 
 template<> std::set<const PythonTypePrinter<3> *> PythonTypePrinter<3>::all = std::set<const PythonTypePrinter<3> *>();
 template <>
-char PythonTypePrinter<3>::pyBytesType[] = "PyBytes_Type";
+char PythonTypePrinter<3>::pyBytesType[] = "PyUnicode_Type";
 
 /**
  * @brief Converts a Python PyASCIIObject, PyCompactUnicodeObject or PyUnicodeObjec to a string

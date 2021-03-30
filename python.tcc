@@ -48,9 +48,9 @@ template <int PyV> class HeapPrinter : public PythonTypePrinter<PyV> {
 };
 
 template <int PyV> class StringPrinter : public PythonTypePrinter<PyV> {
-    Elf::Addr print(const PythonPrinter<PyV> *pc, const PyObject *pyo, const PyTypeObject *, Elf::Addr) const override {
-        auto *pso = (const PyBytesObject *)pyo;
-        pc->os << "\"" << pso->ob_sval << "\"";
+    Elf::Addr print(const PythonPrinter<PyV> *pc, const PyObject *, const PyTypeObject *, Elf::Addr addr) const override {
+        auto str = readString<PyV>(*pc->proc.io, addr);
+        pc->os << "\"" << str << "\"";
         return 0;
     }
     const char *type() const override { return PythonTypePrinter<PyV>::pyBytesType; }
