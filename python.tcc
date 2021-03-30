@@ -165,8 +165,8 @@ template <int PyV> class FramePrinter : public PythonTypePrinter<PyV> {
         if (pfo->f_code != 0) {
             const auto &code = readPyObj<PyV, PyCodeObject>(*pc->proc.io, Elf::Addr(pfo->f_code));
             auto lineNo = getLine<PyV>(*pc->proc.io, &code, pfo);
-            auto func = pc->proc.io->readString(Elf::Addr(code.co_name) + offsetof(PyBytesObject, ob_sval));
-            auto file = pc->proc.io->readString(Elf::Addr(code.co_filename) + offsetof(PyBytesObject, ob_sval));
+            auto func = readString<PyV>(*pc->proc.io, Elf::Addr(code.co_name));
+            auto file = readString<PyV>(*pc->proc.io, Elf::Addr(code.co_filename));
             pc->os << pc->prefix() << func << " in " << file << ":" << lineNo << "\n";
 
             if (pc->options[PstackOption::doargs]) {
